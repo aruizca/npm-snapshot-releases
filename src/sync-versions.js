@@ -5,14 +5,14 @@ module.exports = {
         let packageJson = require(`${targetDir}/package.json`);
         let updated = false;
 
-        console.log(`Initializing module with version: ${version} and node.js version: ${nodejsVersion}`);
+        console.log(`Initializing module with version: ${version} and node.js version: ${nodeVersion}`);
         if (packageJson.version !== version) {
             packageJson.version = version;
             updated = true;
         }
 
-        if (packageJson.engines.node !== `=${nodejsVersion}`) {
-            packageJson.engines.node = `=${nodejsVersion}`;
+        if (packageJson.engines.node !== `=${nodeVersion}`) {
+            packageJson.engines.node = `=${nodeVersion}`;
             updated = true;
         }
 
