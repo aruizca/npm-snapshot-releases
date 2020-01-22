@@ -1,5 +1,5 @@
 module.exports = {
-    next: () => {
+    nextSnapshotVersion: () => {
         console.log('Execute next script');
     }
 };

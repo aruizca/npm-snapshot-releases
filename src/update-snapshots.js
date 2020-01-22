@@ -1,34 +1,32 @@
 const fs = require('fs');
 const shell = require('shelljs');
-
-
-function getPackageLock(lockFile) {
-    try {
-        return JSON.parse(fs.readFileSync(lockFile));
-    } catch (e) {
-        error(e);
-    }
-}
+const { error } = require('./error-handler');
 
 function retrieveSnapshotDependencies(dependencies) {
     if (dependencies) {
-        return Object.values(dependencies).filter(dependency => dependency.version.includes('-SNAPSHOT.'));
+        return Object.entries(dependencies).filter(([dependencyName, dependency]) => dependency.version.includes('-SNAPSHOT.'));
     }
     return [];
 }
 
 module.exports = {
-    unlockSnapshots: (targetDir) => {
-        const lockFile = `${targetDir}/package-lock.json`;
-        let packageLock = getPackageLock(targetDir);
-        const snapshotDependencies = retrieveSnapshotDependencies(packageLock.dependencies);
-        if (snapshotDependencies) {
-            snapshotDependencies.forEach(snapshotDependency => {
-                shell.exec("npm uninstall my-lib --no-save)
-                delete packageLock.dependencies[snapshotDependency];
-                console.log("Dependency ")
-            });
-            fs.writeFileSync(lockFile, JSON.stringify(packageLock, null, 2));
+    updateSnapshots: (targetDir) => {
+        try {
+            const lockFile = `${targetDir}/package-lock.json`;
+            console.log(`Processing file: ${lockFile}`);
+            let packageLock = JSON.parse(fs.readFileSync(lockFile));;
+            const snapshotDependencies = retrieveSnapshotDependencies(packageLock.dependencies);
+            if (snapshotDependencies) {
+                snapshotDependencies.forEach(([dependencyName, dependency]) => {
+                    shell.exec(`npm uninstall ${snapshotDependency.key} --no-save`)
+                    delete packageLock.dependencies[snapshotDependency];
+                    console.log(`Dependency ${dependencyName}:${dependency.version} was removed so it can be updated.`)
+                });
+                fs.writeFileSync(lockFile, JSON.stringify(packageLock, null, 2));
+                shell.exec("npm i");
+            }
+        } catch (e) {
+            error(e);
         }
     }
 };

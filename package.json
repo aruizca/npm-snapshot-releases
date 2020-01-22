@@ -25,5 +25,8 @@
   "homepage": "https://github.com/aruizca/npm-snapshot-releases#readme",
   "bin": {
     "nsr": "bin/nsr.js"
+  },
+  "dependencies": {
+    "shelljs": "^0.8.3"
   }
 }
