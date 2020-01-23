@@ -23,7 +23,6 @@ module.exports = {
                     console.log(`Dependency ${dependencyName}:${dependency.version} was removed so it can be updated.`)
                 });
                 fs.writeFileSync(lockFile, JSON.stringify(packageLock, null, 2));
-                shell.exec("npm i");
             }
         } catch (e) {
             error(e);
