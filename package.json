@@ -1,6 +1,6 @@
 {
   "name": "npm-snapshot-releases",
-  "version": "1.0.0-SNAPSHOT.1",
+  "version": "1.0.0-SNAPSHOT.4",
   "description": "SNAPSHOT version releases for npm",
   "scripts": {
     "test": "jest"

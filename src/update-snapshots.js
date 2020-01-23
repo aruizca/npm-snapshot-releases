@@ -18,8 +18,8 @@ module.exports = {
             const snapshotDependencies = retrieveSnapshotDependencies(packageLock.dependencies);
             if (snapshotDependencies) {
                 snapshotDependencies.forEach(([dependencyName, dependency]) => {
-                    shell.exec(`npm uninstall ${snapshotDependency.key} --no-save`)
-                    delete packageLock.dependencies[snapshotDependency];
+                    shell.exec(`npm uninstall ${dependencyName} --no-save`);
+                    delete packageLock.dependencies[dependencyName];
                     console.log(`Dependency ${dependencyName}:${dependency.version} was removed so it can be updated.`)
                 });
                 fs.writeFileSync(lockFile, JSON.stringify(packageLock, null, 2));
