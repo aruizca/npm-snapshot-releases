@@ -40,10 +40,10 @@ switch (args[0]) {
     case 'mvn-sync':
         console.log('Syncing Maven version and Node.js runtime...');
         console.log('--------------------------------------------');
-        if (!args[0] || !args[1]) {
+        if (!args[1] || !args[2]) {
             showHelp();
         }
-        syncVersions(targetDir, args[0], args[1]);
+        syncVersions(targetDir, args[1], args[2]);
         break;
     case 'mvn-verify':
         console.log('Checks for snapshot dependencies');
