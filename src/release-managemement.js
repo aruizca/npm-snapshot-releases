@@ -26,7 +26,7 @@ module.exports = {
             let package = JSON.parse(fs.readFileSync(`${targetDir}/package.json`));
             if (package.version.includes("-SNAPSHOT.")) {
                 shell.exec(`npm publish --registry ${registryUrl}`);
-                this.nextSnapshotVersion(targetDir);
+                module.exports.nextSnapshotVersion(targetDir);
             } else {
                 error(`This package with version ${package.version} is not a SNAPSHOT version`);
             }
