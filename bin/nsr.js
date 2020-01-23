@@ -1,30 +1,17 @@
 #!/usr/bin/env node
-const { nextSnapshotVersion } = require('../src/next-version');
 const { syncVersions } = require('../src/sync-versions');
 const { updateSnapshots } = require('../src/update-snapshots');
+const { nextSnapshotVersion, deploy, release } = require('../src/release-managemement');
 
 // Grab provided args
 const [,, ...args] = process.argv;
 const targetDir = process.cwd();
 
-function showHelp() {
-    console.log(`
-These are the available commands:
-- next: set next snapshot development version by increasing bugfix number
-- update: install dependencies while updating the snapshot dependencies
-- deploy <registry url>: TODO
-- release <registry url>: TODO
-- mvn-sync <version> <node.js runtime version>: TODO
-- mvn-verify: TODO 
-    `);
-    process.exit(0);
-}
-
 switch (args[0]) {
     case 'next':
         console.log(`Setting next development version`);
         console.log(`--------------------------------`);
-        nextSnapshotVersion();
+        nextSnapshotVersion(targetDir);
         break;
     case 'update':
         console.log('Removing snapshot reference from package-lock.json and the library from node_modules');
@@ -32,10 +19,18 @@ switch (args[0]) {
         updateSnapshots(targetDir);
         break;
     case 'deploy':
-        console.log('Deploys a snapshot release to provided registry...');
+        console.log('Deploying the snapshot release to provided registry');
+        console.log('---------------------------------------------------');
+        if (!args[0]) {
+            showHelp();
+        }
+        deploy(args[0], targetDir);
         break;
     case 'release':
-        console.log('Perform a final release to provided registry...');
+        console.log('Performing a final release to provided registry...');
+        if (!args[0]) {
+            showHelp();
+        }
         break;
     case 'mvn-sync':
         console.log('Syncing Maven version and Node.js runtime...');
@@ -50,4 +45,17 @@ switch (args[0]) {
         break;
     default:
         showHelp();
+}
+
+function showHelp() {
+    console.log(`
+These are the available commands:
+- next: set next snapshot development version by increasing bugfix number
+- update: install dependencies while updating the snapshot dependencies
+- deploy <registry url>: TODO
+- release <registry url>: TODO
+- mvn-sync <version> <node.js runtime version>: TODO
+- mvn-verify: TODO 
+    `);
+    process.exit(0);
 }
