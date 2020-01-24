@@ -19,7 +19,7 @@ module.exports = {
         if (!updated) {
             console.log('package.json is up to date. No changes made.');
         } else {
-            fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
+            fs.writeFileSync(`${targetDir}/package.json`, JSON.stringify(packageJson, null, 2));
             console.log('package.json updated.');
         }
     }
